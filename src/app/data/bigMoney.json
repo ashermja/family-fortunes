@@ -1,0 +1,15 @@
+{
+  "questions": [
+    {
+      "question": "Name an animal you can't fit in a mini",
+      "answers": [
+        { "answer": "Elephant", "count": 81 },
+        { "answer": "Giraffe", "count": 17 },
+        { "answer": "Blue Whale", "count": 7 },
+        { "answer": "Rhino", "count": 5 },
+        { "answer": "Hippo", "count": 5 },
+        { "answer": "Horse", "count": 4 }
+      ]
+    }
+  ]
+}

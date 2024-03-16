@@ -1,95 +1,119 @@
+"use client";
 import Image from "next/image";
 import styles from "./page.module.css";
+import { questions } from "./data/questions";
+import * as gameController from "./controllers/game";
+import { useCallback, useEffect, useState } from "react";
+import { Answer, Game } from "./types/types";
 
 export default function Home() {
+  const [game, setGame] = useState<Game>(gameController.newGame());
+
+  const handleUserKeyPress = useCallback(
+    (event: any) => {
+      const { keyCode } = event;
+      switch (keyCode) {
+        case 49:
+        case 50:
+        case 51:
+        case 52:
+        case 53:
+        case 54:
+          const answer: number = +keyCode - 49;
+          setGame(
+            gameController.correctAnswer(
+              game,
+              answer,
+              questions[game.round - 1].answers[answer].count
+            )
+          );
+          break;
+        case 78:
+          setGame(gameController.newGame());
+          break;
+        case 87:
+          setGame(gameController.incorrectAnswer(game));
+          break;
+        case 39:
+          setGame(gameController.nextRound(game, questions.length));
+          break;
+      }
+    },
+    [game]
+  );
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleUserKeyPress);
+    return () => {
+      window.removeEventListener("keydown", handleUserKeyPress);
+    };
+  }, [handleUserKeyPress]);
+
+  const renderAnswer = (answer: Answer, answered: boolean, index: number) => {
+    if (answered) {
+      return (
+        <li key={index}>
+          <span style={{ float: "left" }}>{answer.answer}</span>
+          <span style={{ float: "right" }}>{answer.count}</span>
+        </li>
+      );
+    }
+    return (
+      <li key={index}>
+        <span style={{ float: "left" }}>----------------------------</span>
+        <span style={{ float: "right" }}>**</span>
+      </li>
+    );
+  };
+
+  const renderWrong = (lives: number, initialLives: number) => {
+    const rows: Array<JSX.Element> = [];
+    if (lives === initialLives) {
+      rows.push(<span style={{ width: 160 }} />);
+    }
+    for (let i = initialLives; i > lives; i--) {
+      rows.push(
+        <span key={i} style={{ width: 160 }}>
+          X
+        </span>
+      );
+    }
+    return rows;
+  };
+
+  const total = (game: Game) => {
+    return (
+      <>
+        <span style={{ float: "right" }}>{game.currentRound.total}</span>
+        <span style={{ float: "right", marginRight: "20px" }}>Total</span>
+      </>
+    );
+  };
   return (
     <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+      <div className={styles.score}>{game.teamA.score}</div>
+      <div className={styles.surveyContainer}>
+        <div className={styles.wrong}>
+          {renderWrong(game.teamA.lives, game.teamA.initialLives)}
         </div>
+        <div
+          className={styles.description}
+          style={{ width: "840px", marginTop: "40px" }}
+        >
+          <ol style={{ fontSize: 70, width: "82%" }}>
+            {questions[game.round - 1].answers.map((answer, index: number) =>
+              renderAnswer(answer, game.currentRound.answered[index], index)
+            )}
+          </ol>
+        </div>
+        <div className={styles.wrong}>
+          <div className={styles.wrong}>
+            {renderWrong(game.teamB.lives, game.teamB.initialLives)}
+          </div>
+        </div>
+        <span className={styles.total}>{total(game)}</span>
       </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
+      <div className={styles.score}>{game.teamB.score}</div>
     </main>
   );
 }
