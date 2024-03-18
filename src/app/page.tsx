@@ -1,13 +1,18 @@
 "use client";
-import Image from "next/image";
 import styles from "./page.module.css";
 import { questions } from "./data/questions";
 import * as gameController from "./controllers/game";
 import { useCallback, useEffect, useState } from "react";
 import { Answer, Game } from "./types/types";
+import useSound from "use-sound";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
   const [game, setGame] = useState<Game>(gameController.newGame());
+  const [correct] = useSound("/sounds/correct.mp3");
+  const [topAnswer] = useSound("/sounds/top-answer.mp3");
+  const [wrongAnswer] = useSound("/sounds/wrong-answer.mp3");
 
   const handleUserKeyPress = useCallback(
     (event: any) => {
@@ -20,6 +25,11 @@ export default function Home() {
         case 53:
         case 54:
           const answer: number = +keyCode - 49;
+          if (answer === 0) {
+            topAnswer();
+          } else {
+            correct();
+          }
           setGame(
             gameController.correctAnswer(
               game,
@@ -29,9 +39,11 @@ export default function Home() {
           );
           break;
         case 78:
+          // router.push('/big-money')
           setGame(gameController.newGame());
           break;
         case 87:
+          wrongAnswer();
           setGame(gameController.incorrectAnswer(game));
           break;
         case 39:
@@ -68,14 +80,18 @@ export default function Home() {
 
   const renderWrong = (lives: number, initialLives: number) => {
     const rows: Array<JSX.Element> = [];
-    if (lives === initialLives) {
-      rows.push(<span style={{ width: 160 }} />);
-    }
-    for (let i = initialLives; i > lives; i--) {
+    const wrongCount = initialLives - lives;
+    for (let i = 0; i < initialLives; i++) {
       rows.push(
-        <span key={i} style={{ width: 160 }}>
-          X
-        </span>
+        <div className={styles.wrongItemContainer}>
+          <span
+            className={`${styles.wrongHidden} ${
+              wrongCount > i && styles.wrongShown
+            }`}
+          >
+            X
+          </span>
+        </div>
       );
     }
     return rows;
@@ -89,6 +105,7 @@ export default function Home() {
       </>
     );
   };
+
   return (
     <main className={styles.main}>
       <div className={styles.score}>{game.teamA.score}</div>

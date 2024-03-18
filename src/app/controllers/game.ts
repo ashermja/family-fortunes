@@ -98,7 +98,7 @@ export const correctAnswer = (
   count: number
 ): Game => {
   let answered: Answered = [...game.currentRound.answered];
-  if (answered[questionIndex] === true) {
+  if (answered[questionIndex] === true || game.currentRound.roundComplete) {
     return game;
   }
   answered.splice(questionIndex, 1, true);

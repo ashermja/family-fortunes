@@ -1,0 +1,11 @@
+.main {
+  width: 180px;
+  font-family: var(--mobile-font);
+  font-size: 240px;
+  height: 0px;
+  transition: all 0.5s;
+}
+
+.wrong {
+  height: 200px;
+}

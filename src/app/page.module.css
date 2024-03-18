@@ -33,6 +33,7 @@
   margin: 4px;
   border-radius: var(--border-radius);
   border: 3px solid #222;
+  width: 102px;
 }
 
 .wrong {
@@ -45,11 +46,25 @@
   flex-wrap: wrap;
   align-items: flex-start;
   justify-content: flex-start;
+  font-size: 240px;
 }
 
-.wrong span {
+.wrongItemContainer {
+  height: 200px;
+  display: flex;
+}
+
+.wrongHidden {
   font-size: 240px;
-  height: 180px;
+  height: 0px;
+  width: 160px;
+  transition: all 0.5s;
+  overflow: hidden;
+}
+
+.wrongShown {
+  width: 160px;
+  height: 200px;
 }
 
 .total {
