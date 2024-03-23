@@ -125,7 +125,7 @@ export default function Home() {
 
   return (
     <main className={styles.main}>
-      <div className={styles.score}>{game.teamA.score}</div>
+      <div className={`${styles.score}${game.currentRound.inControl === 'A' ? ' ' + styles.selected : ''}`}>{game.teamA.score}</div>
       <div className={styles.surveyContainer}>
         <div className={styles.wrong}>
           {renderWrong(game.teamA.lives, game.teamA.initialLives)}
@@ -147,7 +147,7 @@ export default function Home() {
         </div>
         <span className={styles.total}>{total(game)}</span>
       </div>
-      <div className={styles.score}>{game.teamB.score}</div>
+      <div className={`${styles.score}${game.currentRound.inControl === 'B' ? ' ' + styles.selected : ''}`}>{game.teamB.score}</div>
     </main>
   );
 }
