@@ -4,8 +4,8 @@ export type TeamNames = "A" | "B";
 
 export type Team = {
   score: number;
-  lives: number;
-  initialLives: number;
+  lives?: number;
+  initialLives?: number;
 };
 
 export type TeamsStatus = {
@@ -22,10 +22,11 @@ export type TeamsStatus = {
 };
 
 export type CurrentRound = {
-  inControl: TeamNames;
+  inControl?: TeamNames;
   total: number;
   answered: Answered;
   roundComplete: boolean;
+  stealAttempt: 'none' | 'attempt' | 'success';
 };
 
 export type Game = {

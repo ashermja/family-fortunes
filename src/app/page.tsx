@@ -38,6 +38,12 @@ export default function Home() {
             )
           );
           break;
+        case 65:
+          setGame(gameController.setInControl(game, "A"));
+          break;
+        case 66:
+          setGame(gameController.setInControl(game, "B"));
+          break;
         case 78:
           // router.push('/big-money')
           setGame(gameController.newGame());
@@ -78,8 +84,19 @@ export default function Home() {
     );
   };
 
-  const renderWrong = (lives: number, initialLives: number) => {
+  const renderWrong = (lives?: number, initialLives?: number) => {
     const rows: Array<JSX.Element> = [];
+    if (initialLives === undefined || lives === undefined) {
+      <div className={styles.wrongItemContainer}>
+      <span
+        className={`${styles.wrongHidden}`}
+      >
+        X
+      </span>
+    </div>
+      return rows;
+    }
+    
     const wrongCount = initialLives - lives;
     for (let i = 0; i < initialLives; i++) {
       rows.push(
