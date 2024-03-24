@@ -45,7 +45,6 @@ export default function Home() {
           setGame(gameController.setInControl(game, "B"));
           break;
         case 78:
-          // router.push('/big-money')
           setGame(gameController.newGame());
           break;
         case 87:
@@ -53,6 +52,9 @@ export default function Home() {
           setGame(gameController.incorrectAnswer(game));
           break;
         case 39:
+          if (game.round === questions.length){
+            router.push('/big-money');
+          }
           setGame(gameController.nextRound(game, questions.length));
           break;
       }
