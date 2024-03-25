@@ -26,7 +26,7 @@ export type CurrentRound = {
   total: number;
   answered: Answered;
   roundComplete: boolean;
-  stealAttempt: 'none' | 'attempt' | 'success';
+  stealAttempt: "none" | "attempt" | "success";
 };
 
 export type Game = {
@@ -44,4 +44,10 @@ export type Answer = {
 export type Question = {
   question: string;
   answers: Array<Answer>;
+};
+
+export type BigMoneyGame = {
+  round: 1 | 2;
+  answers1: Array<Answer>;
+  answers2: Array<Answer>;
 };
