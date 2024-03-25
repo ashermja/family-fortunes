@@ -22,6 +22,11 @@ export const correctAnswer = (
     round = 2;
     answers = game.answers2;
   }
+  if (round === 2) {
+    if (game.answers1[answers.length].answer === answer.answer) {
+      return game;
+    }
+  }
   answers.push(answer);
   return {
     ...game,
