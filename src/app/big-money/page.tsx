@@ -81,10 +81,12 @@ export default function BigMoney() {
     );
   };
 
-  const total = (game: BigMoneyGame) => {
+  const total = (game: BigMoneyGame, roundNumber: number) => {
     return (
       <>
-        <span style={{ float: "right", marginTop: "40px" }}>{0}</span>
+        <span style={{ float: "right", marginTop: "40px" }}>
+          {bigMoneyController.getTotals(game)[roundNumber - 1]}
+        </span>
         <span
           style={{ float: "right", marginTop: "40px", marginRight: "50px" }}
         >
@@ -102,7 +104,7 @@ export default function BigMoney() {
             {bigMoneyQuestions.map((question, index: number) =>
               renderAnswer(game.answers1, index)
             )}
-            <span>{total(game)}</span>
+            <span>{total(game, 1)}</span>
           </ol>
         </div>
         <div className={styles.rightAnswers}>
@@ -110,7 +112,7 @@ export default function BigMoney() {
             {bigMoneyQuestions.map((question, index: number) =>
               renderAnswer(game.answers2, index)
             )}
-            <span>{total(game)}</span>
+            <span>{total(game, 2)}</span>
           </ol>
         </div>
       </div>

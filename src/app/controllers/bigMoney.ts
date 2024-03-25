@@ -38,3 +38,11 @@ export const getQuestionNumber = (
     ? game[`answers${game.round}`].length
     : 0;
 };
+
+export const getTotals = (game: BigMoneyGame): [number, number] => {
+  let round1Total = 0;
+  let round2Total = 0;
+  game.answers1.forEach((answer) => (round1Total += answer.count));
+  game.answers2.forEach((answer) => (round2Total += answer.count));
+  return [round1Total, round2Total];
+};
