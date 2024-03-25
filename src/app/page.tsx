@@ -52,8 +52,8 @@ export default function Home() {
           setGame(gameController.incorrectAnswer(game));
           break;
         case 39:
-          if (game.round === questions.length){
-            router.push('/big-money');
+          if (game.round === questions.length) {
+            router.push("/big-money");
           }
           setGame(gameController.nextRound(game, questions.length));
           break;
@@ -90,15 +90,11 @@ export default function Home() {
     const rows: Array<JSX.Element> = [];
     if (initialLives === undefined || lives === undefined) {
       <div className={styles.wrongItemContainer}>
-      <span
-        className={`${styles.wrongHidden}`}
-      >
-        X
-      </span>
-    </div>
+        <span className={`${styles.wrongHidden}`}>X</span>
+      </div>;
       return rows;
     }
-    
+
     const wrongCount = initialLives - lives;
     for (let i = 0; i < initialLives; i++) {
       rows.push(
@@ -127,7 +123,11 @@ export default function Home() {
 
   return (
     <main className={styles.main}>
-      <div className={`${styles.score}${game.currentRound.inControl === 'A' ? ' ' + styles.selected : ''}`}>{game.teamA.score}</div>
+      <div
+        className={`${styles.score}${game.currentRound.inControl === "A" ? " " + styles.selected : ""}`}
+      >
+        {game.teamA.score}
+      </div>
       <div className={styles.surveyContainer}>
         <div className={styles.wrong}>
           {renderWrong(game.teamA.lives, game.teamA.initialLives)}
@@ -149,7 +149,11 @@ export default function Home() {
         </div>
         <span className={styles.total}>{total(game)}</span>
       </div>
-      <div className={`${styles.score}${game.currentRound.inControl === 'B' ? ' ' + styles.selected : ''}`}>{game.teamB.score}</div>
+      <div
+        className={`${styles.score}${game.currentRound.inControl === "B" ? " " + styles.selected : ""}`}
+      >
+        {game.teamB.score}
+      </div>
     </main>
   );
 }

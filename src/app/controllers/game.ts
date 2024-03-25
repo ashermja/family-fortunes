@@ -11,7 +11,7 @@ export const LIVES = 3;
 const STEAL_LIVES = 1;
 
 const getTeamsStatus = (game: Game): TeamsStatus | undefined => {
-  if(!game.currentRound.inControl) {
+  if (!game.currentRound.inControl) {
     return;
   }
   const activeTeamId = game.currentRound.inControl;
@@ -49,7 +49,11 @@ export const newGame = (inControl: TeamNames = "A"): Game => {
 
 export const nextRound = (game: Game, questionLength: number): Game => {
   const teams = getTeamsStatus(game);
-  if (teams?.activeTeam?.team?.lives === undefined || !game.currentRound.inControl || !game.currentRound.roundComplete) {
+  if (
+    teams?.activeTeam?.team?.lives === undefined ||
+    !game.currentRound.inControl ||
+    !game.currentRound.roundComplete
+  ) {
     return game;
   }
   if (teams.activeTeam.team.lives > 0) {
@@ -93,7 +97,7 @@ export const initCurrentRound = (): CurrentRound => {
     total: 0,
     answered: [false, false, false, false, false, false],
     roundComplete: false,
-    stealAttempt: 'none',
+    stealAttempt: "none",
   };
 };
 
@@ -105,8 +109,12 @@ export const correctAnswer = (
   let answered: Answered = [...game.currentRound.answered];
   const teams = getTeamsStatus(game);
 
-  if (teams?.activeTeam?.team?.lives === undefined || answered[questionIndex] === true 
-      || game.currentRound.roundComplete || game.currentRound.stealAttempt === 'success') {
+  if (
+    teams?.activeTeam?.team?.lives === undefined ||
+    answered[questionIndex] === true ||
+    game.currentRound.roundComplete ||
+    game.currentRound.stealAttempt === "success"
+  ) {
     return game;
   }
   answered.splice(questionIndex, 1, true);
@@ -119,7 +127,10 @@ export const correctAnswer = (
       roundComplete:
         !answered.includes(false) || teams.inActiveTeam.team.lives === 0,
       total: game.currentRound.total + count,
-      stealAttempt: game.currentRound.stealAttempt === 'attempt' ? 'success' : game.currentRound.stealAttempt,
+      stealAttempt:
+        game.currentRound.stealAttempt === "attempt"
+          ? "success"
+          : game.currentRound.stealAttempt,
     },
   };
 };
@@ -127,7 +138,11 @@ export const correctAnswer = (
 export const incorrectAnswer = (game: Game): Game => {
   const teams = getTeamsStatus(game);
   let stealAttempt = game.currentRound.stealAttempt;
-  if (stealAttempt === 'success' || teams?.activeTeam?.team?.lives === undefined || teams?.inActiveTeam?.team?.lives === undefined) {
+  if (
+    stealAttempt === "success" ||
+    teams?.activeTeam?.team?.lives === undefined ||
+    teams?.inActiveTeam?.team?.lives === undefined
+  ) {
     return game;
   }
   const lives = Math.max(0, teams.activeTeam.team.lives - 1);
@@ -135,7 +150,7 @@ export const incorrectAnswer = (game: Game): Game => {
   let roundComplete = false;
   if (lives === 0 && teams.inActiveTeam.team.lives > 0) {
     inControl = teams.inActiveTeam.id;
-    stealAttempt = 'attempt';
+    stealAttempt = "attempt";
   } else if (lives === 0 && teams.inActiveTeam.team.lives === 0) {
     roundComplete = true;
   }
