@@ -71,3 +71,8 @@ export const getTotals = (game: BigMoneyGame): [number, number] => {
   game.answers2.forEach((answer) => (round2Total += answer.count));
   return [round1Total, round2Total];
 };
+
+export const getGrandTotal = (game: BigMoneyGame): number => {
+  const totals = getTotals(game);
+  return totals[0] + totals[1];
+};

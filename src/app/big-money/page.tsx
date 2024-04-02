@@ -121,6 +121,21 @@ export default function BigMoney() {
     );
   };
 
+  const grandTotal = (game: BigMoneyGame, roundNumber: number) => {
+    return (
+      <>
+        <span style={{ float: "right", marginTop: "40px" }}>
+          {bigMoneyController.getGrandTotal(game)}
+        </span>
+        <span
+          style={{ float: "right", marginTop: "40px", marginRight: "50px" }}
+        >
+          Grand Total
+        </span>
+      </>
+    );
+  };
+
   return (
     <main className={styles.main}>
       <div className={styles.surveyContainer}>
@@ -140,6 +155,7 @@ export default function BigMoney() {
             <span>{total(game, 2)}</span>
           </ol>
         </div>
+        <div className={styles.total}>{grandTotal(game, 2)}</div>
       </div>
     </main>
   );

@@ -60,3 +60,9 @@
     opacity: 0;
   }
 }
+
+.total {
+  float: right;
+  font-size: 50px;
+  width: 1290px;
+}
