@@ -25,3 +25,38 @@
   padding-left: 30px;
   padding-right: 0px;
 }
+
+.topAnswer {
+  animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+  1% {
+    opacity: 0;
+  }
+  49% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 100;
+  }
+}
+
+.topAnswerAlt {
+  animation: blinkerAlt 1s linear infinite;
+}
+
+@keyframes blinkerAlt {
+  0% {
+    opacity: 100;
+  }
+  49% {
+    opacity: 100;
+  }
+  50% {
+    opacity: 0;
+  }
+  99% {
+    opacity: 0;
+  }
+}

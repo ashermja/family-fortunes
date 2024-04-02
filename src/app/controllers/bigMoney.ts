@@ -1,4 +1,4 @@
-import { BigMoneyGame, Answer } from "../types/types";
+import { BigMoneyGame, Answer, BigMoneyAnswer } from "../types/types";
 
 export const init = (): BigMoneyGame => {
   return {
@@ -8,12 +8,12 @@ export const init = (): BigMoneyGame => {
   };
 };
 
-export const correctAnswer = (
+export const parseAnswer = (
   game: BigMoneyGame,
-  answer: Answer,
+  answer: BigMoneyAnswer,
   questionLength: number
 ): BigMoneyGame => {
-  let answers = game[`answers${game.round}`];
+  let answers = [...game[`answers${game.round}`]];
   let round = game.round;
   if (answers.length === questionLength) {
     if (game.round === 2) {
@@ -33,6 +33,26 @@ export const correctAnswer = (
     round,
     [`answers${round}`]: answers,
   };
+};
+
+export const correctAnswer = (
+  game: BigMoneyGame,
+  answer: BigMoneyAnswer,
+  questionLength: number
+): BigMoneyGame => {
+  return parseAnswer(game, answer, questionLength);
+};
+
+export const incorrectAnswer = (
+  game: BigMoneyGame,
+  questionLength: number
+): BigMoneyGame => {
+  parseAnswer(
+    game,
+    { answer: "", count: 0, isTopAnswer: false },
+    questionLength
+  );
+  return game;
 };
 
 export const getQuestionNumber = (

@@ -48,6 +48,15 @@ export type Question = {
 
 export type BigMoneyGame = {
   round: 1 | 2;
-  answers1: Array<Answer>;
-  answers2: Array<Answer>;
+  answers1: Array<BigMoneyAnswer>;
+  answers2: Array<BigMoneyAnswer>;
+};
+
+export type BigMoneyAnswer = Answer & {
+  isTopAnswer: boolean;
+};
+
+export type BigMoneyQuestion = {
+  question: string;
+  answers: Array<BigMoneyAnswer>;
 };
