@@ -6,10 +6,15 @@ import { useCallback, useEffect, useState } from "react";
 import { Answer, Game } from "./types/types";
 import useSound from "use-sound";
 import { useRouter } from "next/navigation";
+import getConfig from "next/config";
 
 export default function Home() {
   const router = useRouter();
-  const [game, setGame] = useState<Game>(gameController.newGame());
+  const [game, setGame] = useState<Game>(
+    process.env.NEXT_PUBLIC_USE_STORAGE && window.sessionStorage.getItem("game")
+      ? JSON.parse(window.sessionStorage.getItem("game") ?? "")
+      : gameController.newGame()
+  );
   const [correct] = useSound("/sounds/correct.mp3");
   const [topAnswer] = useSound("/sounds/top-answer.mp3");
   const [wrongAnswer] = useSound("/sounds/wrong-answer.mp3");
@@ -68,6 +73,22 @@ export default function Home() {
       window.removeEventListener("keydown", handleUserKeyPress);
     };
   }, [handleUserKeyPress]);
+
+  useEffect(() => {
+    console.log(process.env.NEXT_PUBLIC_USE_STORAGE, "xxxx");
+    if (
+      process.env.NEXT_PUBLIC_USE_STORAGE &&
+      window.sessionStorage.getItem("game")
+    ) {
+      setGame(JSON.parse(window.sessionStorage.getItem("game") ?? ""));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (process.env.NEXT_PUBLIC_USE_STORAGE) {
+      window.sessionStorage.setItem("game", JSON.stringify(game));
+    }
+  }, [game]);
 
   const renderAnswer = (answer: Answer, answered: boolean, index: number) => {
     if (answered) {
