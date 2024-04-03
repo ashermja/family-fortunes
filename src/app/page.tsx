@@ -6,21 +6,17 @@ import { useCallback, useEffect, useState } from "react";
 import { Answer, Game } from "./types/types";
 import useSound from "use-sound";
 import { useRouter } from "next/navigation";
-import getConfig from "next/config";
 
 export default function Home() {
   const router = useRouter();
-  const [game, setGame] = useState<Game>(
-    process.env.NEXT_PUBLIC_USE_STORAGE && window.sessionStorage.getItem("game")
-      ? JSON.parse(window.sessionStorage.getItem("game") ?? "")
-      : gameController.newGame()
-  );
+  const [game, setGame] = useState<Game>();
   const [correct] = useSound("/sounds/correct.mp3");
   const [topAnswer] = useSound("/sounds/top-answer.mp3");
   const [wrongAnswer] = useSound("/sounds/wrong-answer.mp3");
 
   const handleUserKeyPress = useCallback(
     (event: any) => {
+      if (!game) return;
       const { keyCode } = event;
       switch (keyCode) {
         case 49:
@@ -50,7 +46,9 @@ export default function Home() {
           setGame(gameController.setInControl(game, "B"));
           break;
         case 78:
-          setGame(gameController.newGame());
+          const newGame = gameController.newGame();
+          window.sessionStorage.setItem("game", JSON.stringify(newGame));
+          setGame(newGame);
           break;
         case 87:
           wrongAnswer();
@@ -75,17 +73,23 @@ export default function Home() {
   }, [handleUserKeyPress]);
 
   useEffect(() => {
-    console.log(process.env.NEXT_PUBLIC_USE_STORAGE, "xxxx");
     if (
-      process.env.NEXT_PUBLIC_USE_STORAGE &&
-      window.sessionStorage.getItem("game")
+      process.env.NEXT_PUBLIC_USE_STORAGE === "true" &&
+      window.sessionStorage.getItem("game") !== null &&
+      window.sessionStorage.getItem("game") !== "undefined"
     ) {
       setGame(JSON.parse(window.sessionStorage.getItem("game") ?? ""));
+    } else {
+      setGame(gameController.newGame());
     }
   }, []);
 
   useEffect(() => {
-    if (process.env.NEXT_PUBLIC_USE_STORAGE) {
+    console.log(game);
+    if (
+      process.env.NEXT_PUBLIC_USE_STORAGE === "true" &&
+      !gameController.isNewGame(game)
+    ) {
       window.sessionStorage.setItem("game", JSON.stringify(game));
     }
   }, [game]);
@@ -141,6 +145,10 @@ export default function Home() {
       </>
     );
   };
+
+  if (!game) {
+    return;
+  }
 
   return (
     <main className={styles.main}>

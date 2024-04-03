@@ -47,6 +47,16 @@ export const newGame = (inControl: TeamNames = "A"): Game => {
   };
 };
 
+export const isNewGame = (game: Game | undefined) => {
+  return (
+    !game ||
+    (game.round === 1 &&
+      game.teamA.score === 0 &&
+      game.teamB.score === 0 &&
+      game.currentRound.total === 0)
+  );
+};
+
 export const nextRound = (game: Game, questionLength: number): Game => {
   const teams = getTeamsStatus(game);
   if (
