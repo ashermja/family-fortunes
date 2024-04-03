@@ -1,0 +1,10 @@
+.main {
+  font-family: var(--mobile-font);
+  font-size: 60px;
+}
+
+.start {
+  position: absolute;
+  left: 43vw;
+  bottom: 90px;
+}
