@@ -34,6 +34,7 @@ export type Game = {
   teamA: Team;
   teamB: Team;
   currentRound: CurrentRound;
+  gameComplete: boolean;
 };
 
 export type Answer = {

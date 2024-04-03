@@ -44,6 +44,7 @@ export const newGame = (inControl: TeamNames = "A"): Game => {
       score: 0,
     },
     currentRound: initCurrentRound(),
+    gameComplete: false,
   };
 };
 
@@ -55,6 +56,10 @@ export const isNewGame = (game: Game | undefined) => {
       game.teamB.score === 0 &&
       game.currentRound.total === 0)
   );
+};
+
+export const canGoToNextRound = (game: Game): boolean => {
+  return game.currentRound.roundComplete;
 };
 
 export const nextRound = (game: Game, questionLength: number): Game => {
@@ -84,6 +89,10 @@ export const nextRound = (game: Game, questionLength: number): Game => {
     },
     currentRound: newRound,
   };
+};
+
+export const gameComplete = (game: Game) => {
+  return { ...game, gameComplete: true };
 };
 
 export const initTeam = (lives: number): Team => {

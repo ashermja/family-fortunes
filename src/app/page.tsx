@@ -55,10 +55,18 @@ export default function Home() {
           setGame(gameController.incorrectAnswer(game));
           break;
         case 39:
-          if (game.round === questions.length) {
+          if (game.gameComplete) {
             router.push("/big-money");
+          } else if (
+            game.round === questions.length &&
+            gameController.canGoToNextRound(game)
+          ) {
+            let finishedGame = gameController.nextRound(game, questions.length);
+            finishedGame = gameController.gameComplete(game);
+            setGame(finishedGame);
+          } else {
+            setGame(gameController.nextRound(game, questions.length));
           }
-          setGame(gameController.nextRound(game, questions.length));
           break;
       }
     },
