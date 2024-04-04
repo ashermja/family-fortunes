@@ -16,7 +16,7 @@ export default function StartScreen() {
           backgroundSize: "cover",
         }}
       >
-        <Link className={styles.start} href={`/game`}>
+        <Link className={styles.start} href={`/intro`}>
           START
         </Link>
       </div>
