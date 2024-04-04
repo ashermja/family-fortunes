@@ -93,7 +93,6 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    console.log(game);
     if (
       process.env.NEXT_PUBLIC_USE_STORAGE === "true" &&
       !gameController.isNewGame(game)
@@ -113,7 +112,7 @@ export default function Home() {
     }
     return (
       <li key={index}>
-        <span style={{ float: "left" }}>----------------------------</span>
+        <span style={{ float: "left" }}>---------------------------------</span>
         <span style={{ float: "right" }}>**</span>
       </li>
     );
@@ -173,7 +172,7 @@ export default function Home() {
           className={styles.description}
           style={{ width: "840px", marginTop: "40px" }}
         >
-          <ol style={{ fontSize: 70, width: "82%" }}>
+          <ol style={{ fontSize: 60, width: "82%" }}>
             {questions[game.round - 1].answers.map((answer, index: number) =>
               renderAnswer(answer, game.currentRound.answered[index], index)
             )}

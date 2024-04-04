@@ -40,11 +40,7 @@ export default function Intro() {
       playsInline
       autoPlay
     >
-      <source
-        src="/video/family-fortunes-intro.mp4"
-        onEnded={() => console.log("loaded")}
-        type="video/mp4"
-      />
+      <source src="/video/family-fortunes-intro.mp4" type="video/mp4" />
       Your browser does not support the video tag.
     </video>
   );
