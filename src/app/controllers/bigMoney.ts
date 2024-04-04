@@ -23,7 +23,10 @@ export const parseAnswer = (
     answers = game.answers2;
   }
   if (round === 2) {
-    if (game.answers1[answers.length].answer === answer.answer) {
+    if (
+      answer.answer !== "" &&
+      game.answers1[answers.length].answer === answer.answer
+    ) {
       return game;
     }
   }
@@ -47,12 +50,11 @@ export const incorrectAnswer = (
   game: BigMoneyGame,
   questionLength: number
 ): BigMoneyGame => {
-  parseAnswer(
+  return parseAnswer(
     game,
     { answer: "", count: 0, isTopAnswer: false },
     questionLength
   );
-  return game;
 };
 
 export const getQuestionNumber = (
