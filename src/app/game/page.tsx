@@ -156,7 +156,8 @@ export default function Home() {
   if (!game) {
     return;
   }
-
+  console.log(questions[game.round - 1].question);
+  console.log(JSON.stringify(questions[game.round - 1]));
   return (
     <main className={styles.main}>
       <div
