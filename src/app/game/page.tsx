@@ -13,6 +13,9 @@ export default function Home() {
   const [correct] = useSound("/sounds/correct.mp3");
   const [topAnswer] = useSound("/sounds/top-answer.mp3");
   const [wrongAnswer] = useSound("/sounds/wrong-answer.mp3");
+  const [topAnswerRoundEnd] = useSound("/sounds/top-answer-round-end.mp3");
+  const [correctRoundEnd] = useSound("/sounds/correct-end-round.mp3");
+  const [wrongAnswerRoundEnd] = useSound("/sounds/wrong-answer-round-end.mp3");
 
   const handleUserKeyPress = useCallback(
     (event: any) => {
@@ -26,18 +29,25 @@ export default function Home() {
         case 53:
         case 54:
           const answer: number = +keyCode - 49;
-          if (answer === 0) {
-            topAnswer();
-          } else {
-            correct();
-          }
-          setGame(
-            gameController.correctAnswer(
-              game,
-              answer,
-              questions[game.round - 1].answers[answer].count
-            )
+          const updatedCorrectGame = gameController.correctAnswer(
+            game,
+            answer,
+            questions[game.round - 1].answers[answer].count
           );
+          if (answer === 0) {
+            if (updatedCorrectGame.currentRound.roundComplete) {
+              topAnswerRoundEnd();
+            } else {
+              topAnswer();
+            }
+          } else {
+            if (updatedCorrectGame.currentRound.roundComplete) {
+              correctRoundEnd();
+            } else {
+              correct();
+            }
+          }
+          setGame(updatedCorrectGame);
           break;
         case 65:
           setGame(gameController.setInControl(game, "A"));
@@ -51,8 +61,13 @@ export default function Home() {
           setGame(newGame);
           break;
         case 87:
-          wrongAnswer();
-          setGame(gameController.incorrectAnswer(game));
+          const updatedWrongGame = gameController.incorrectAnswer(game);
+          if (updatedWrongGame.currentRound.roundComplete) {
+            wrongAnswerRoundEnd();
+          } else {
+            wrongAnswer();
+          }
+          setGame(updatedWrongGame);
           break;
         case 39:
           if (game.gameComplete) {

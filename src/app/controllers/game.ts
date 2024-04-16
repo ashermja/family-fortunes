@@ -173,7 +173,7 @@ export const incorrectAnswer = (game: Game): Game => {
   } else if (lives === 0 && teams.inActiveTeam.team.lives === 0) {
     roundComplete = true;
   }
-  const x = {
+  return {
     ...game,
     currentRound: {
       ...game.currentRound,
@@ -186,7 +186,6 @@ export const incorrectAnswer = (game: Game): Game => {
       lives,
     },
   };
-  return x;
 };
 
 export const setInControl = (game: Game, inControl: TeamNames): Game => {
