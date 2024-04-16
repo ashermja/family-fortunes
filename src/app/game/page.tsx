@@ -17,6 +17,8 @@ export default function Home() {
   const [correctRoundEnd] = useSound("/sounds/correct-end-round.mp3");
   const [wrongAnswerRoundEnd] = useSound("/sounds/wrong-answer-round-end.mp3");
 
+  const [roundCompleteHandled, setRoundCompleteHandled] = useState(false);
+
   const handleUserKeyPress = useCallback(
     (event: any) => {
       if (!game) return;
@@ -34,17 +36,21 @@ export default function Home() {
             answer,
             questions[game.round - 1].answers[answer].count
           );
-          if (answer === 0) {
-            if (updatedCorrectGame.currentRound.roundComplete) {
-              topAnswerRoundEnd();
+          if (!roundCompleteHandled) {
+            if (answer === 0) {
+              if (updatedCorrectGame.currentRound.roundComplete) {
+                topAnswerRoundEnd();
+                setRoundCompleteHandled(true);
+              } else {
+                topAnswer();
+              }
             } else {
-              topAnswer();
-            }
-          } else {
-            if (updatedCorrectGame.currentRound.roundComplete) {
-              correctRoundEnd();
-            } else {
-              correct();
+              if (updatedCorrectGame.currentRound.roundComplete) {
+                correctRoundEnd();
+                setRoundCompleteHandled(true);
+              } else {
+                correct();
+              }
             }
           }
           setGame(updatedCorrectGame);
@@ -62,14 +68,20 @@ export default function Home() {
           break;
         case 87:
           const updatedWrongGame = gameController.incorrectAnswer(game);
-          if (updatedWrongGame.currentRound.roundComplete) {
-            wrongAnswerRoundEnd();
-          } else {
-            wrongAnswer();
+          if (!roundCompleteHandled) {
+            if (updatedWrongGame.currentRound.roundComplete) {
+              wrongAnswerRoundEnd();
+              setRoundCompleteHandled(true);
+            } else {
+              wrongAnswer();
+            }
           }
           setGame(updatedWrongGame);
           break;
         case 39:
+          if (gameController.canGoToNextRound(game)) {
+            setRoundCompleteHandled(false);
+          }
           if (game.gameComplete) {
             router.push("/big-money");
           } else if (

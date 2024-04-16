@@ -131,13 +131,20 @@ export const correctAnswer = (
   if (
     teams?.activeTeam?.team?.lives === undefined ||
     answered[questionIndex] === true ||
-    game.currentRound.roundComplete ||
     game.currentRound.stealAttempt === "success"
   ) {
     return game;
   }
   answered.splice(questionIndex, 1, true);
-
+  if (game.currentRound.roundComplete) {
+    return {
+      ...game,
+      currentRound: {
+        ...game.currentRound,
+        answered,
+      },
+    };
+  }
   return {
     ...game,
     currentRound: {
