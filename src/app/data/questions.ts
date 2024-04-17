@@ -64,7 +64,7 @@ export const questions: Array<Question> = [
       { answer: "District heating", count: 55 },
       { answer: "Heat Pump", count: 22 },
       { answer: "Electric heating", count: 11 },
-      { answer: "Other Wood/pellets", count: 10 },
+      { answer: "Wood/pellets", count: 10 },
       { answer: "Oil heating", count: 1 },
       { answer: "Dont know", count: 1 },
     ],
