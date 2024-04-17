@@ -1,11 +1,14 @@
 "use client";
 
 import { useCallback, useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function Intro() {
   const router = useRouter();
   const videoRef = useRef<HTMLVideoElement>(null);
+  const searchParams = useSearchParams();
+  const videoPath =
+    searchParams.get("videoPath") ?? "/video/family-fortunes-intro.mp4";
 
   const handleUserKeyPress = useCallback(
     (event: any) => {
@@ -40,7 +43,7 @@ export default function Intro() {
       playsInline
       autoPlay
     >
-      <source src="/video/family-fortunes-intro.mp4" type="video/mp4" />
+      <source src={videoPath} type="video/mp4" />
       Your browser does not support the video tag.
     </video>
   );
