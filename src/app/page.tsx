@@ -16,7 +16,13 @@ export default function StartScreen() {
           backgroundSize: "cover",
         }}
       >
-        <Link className={styles.start} href={`/intro`}>
+        <Link
+          className={styles.start}
+          href={{
+            pathname: "/intro",
+            query: { videoPath: "/video/family-fortunes-intro.mp4" },
+          }}
+        >
           START
         </Link>
       </div>

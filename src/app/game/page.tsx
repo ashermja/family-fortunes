@@ -55,6 +55,12 @@ export default function Home() {
           }
           setGame(updatedCorrectGame);
           break;
+        case 57:
+          router.push("/intro?videoPath=/video/prize1.mp4");
+          break;
+        case 48:
+          router.push("/intro?videoPath=/video/prize2.mp4");
+          break;
         case 65:
           setGame(gameController.setInControl(game, "A"));
           break;
